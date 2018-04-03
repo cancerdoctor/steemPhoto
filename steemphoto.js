@@ -19,19 +19,45 @@ app.use('/user', express.static('uploads'));
 app.set('view engine', 'pug');
 
 app.get('/', function(req,res){
-  steem.api.getDiscussionsByCreated({'tag':'photo', 'limit':10}, function(err, result){
+  var input=`
+  <form action="/photo">
+  <p><input type='text' name='author' placeholder='ID'></p>
+  <p><input type='submit'></p>
+  </form>
+  `
+  res.send(input);
+});
+
+app.get('/photo', function(req,res){
+
+  var author=req.query.author;
+  var date=new Date();
+  console.log(date.toISOString().slice(0,19));
+  //steem.api.getDiscussionsByCreated({'tag':'photo', 'limit':10}, function(err, result){
+  steem.api.getDiscussionsByAuthorBeforeDate(author,'',date.toISOString().slice(0,19),100,function(err, result){
     if(err){
       console.log(err);
       app.send('Internal service error!');
     } else {
       var output='';
-      var image_data={};
-//      var marginLeft, imageAspect;
-      //var image_data=/"image":\["https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
+      var jasondata={};
+      var nu = 0;
+
+
       for (var i=0;i<result.length;i++) {
-        image_data = JSON.parse(result[i].json_metadata).image[0];
-        output += ('<h2>'+result[i].title+'</h2>');
-        output += '<div style="width: 400px; height: 400px; overflow: hidden"><img src='+image_data;
+        jsondata = JSON.parse(result[i].json_metadata);
+
+        for (var j=0;j<jsondata.tags.length;j++) {
+          if (jasondata.tags[j] == 'photo') {
+            output += ('<h2>'+result[i].title+'</h2>');
+            output += '<div style="width: 400px; height: 400px; overflow: hidden"><img src='+jasondata.image[0];
+            output += ' style="width:400px"></div><br />'
+            nu++;
+            break;
+          }
+        } if (nu == 5) { break; }
+
+
 /*        if (image_data.height > image_data.width) {
           output += 'width:100%; height:auto; margin-left=0><br />';
         } else {
@@ -39,11 +65,12 @@ app.get('/', function(req,res){
           marginLeft = -Math.round((400/imageAspect - 400)/2);
           output += 'width:auto; height:100%; margin-left='+marginLeft+'px><br />';
         }*/
-        output += ' style="width:400px"></div><br />'
+
       }
       res.send(output);
+
     }
-  })
+  });
   /*
   steem.api.getAccounts(['cancerdoctor'], function(err, result) {
       console.log(err, result);
