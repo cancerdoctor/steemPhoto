@@ -40,17 +40,19 @@ app.get('/photo', function(req,res){
       app.send('Internal service error!');
     } else {
       var output='';
-      var jasondata={};
-      var nu = 0;
+      var tag={}, image={};
+      var i,j,nu = 0;
 
+      console.log(result.length);
+      for (i=0;i<result.length;i++) {
+        tag = JSON.parse(result[i].json_metadata).tags;
+        image = JSON.parse(result[i].json_metadata).image;
 
-      for (var i=0;i<result.length;i++) {
-        jsondata = JSON.parse(result[i].json_metadata);
-
-        for (var j=0;j<jsondata.tags.length;j++) {
-          if (jasondata.tags[j] == 'photo') {
+        for (j=0;j<tag.length;j++) {
+          console.log(tag[j]);
+          if (tag[j] == 'photography' || tag[j] == 'photo') {
             output += ('<h2>'+result[i].title+'</h2>');
-            output += '<div style="width: 400px; height: 400px; overflow: hidden"><img src='+jasondata.image[0];
+            output += '<div style="width: 400px; height: 400px; overflow: hidden"><img src='+image[0];
             output += ' style="width:400px"></div><br />'
             nu++;
             break;
