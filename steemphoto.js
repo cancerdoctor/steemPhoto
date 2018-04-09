@@ -17,6 +17,7 @@ var upload = multer({ storage: _storage});
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/user', express.static('uploads'));
 app.set('view engine', 'pug');
+app.use(express.static('public'));
 
 app.get('/', function(req,res){
   var input=`
@@ -39,38 +40,69 @@ app.get('/photo', function(req,res){
       console.log(err);
       app.send('Internal service error!');
     } else {
-      var output='';
-      var tag={}, image={};
-      var i,j,nu = 0;
 
-      console.log(result.length);
-      for (i=0;i<result.length;i++) {
-        tag = JSON.parse(result[i].json_metadata).tags;
-        image = JSON.parse(result[i].json_metadata).image;
+      steem.api.getAccounts([author], function(err, acc) {
+        var profile=JSON.parse(acc[0].json_metadata).profile;
+        var about=profile.about;
+        var profile_image=profile.profile_image;
 
-        for (j=0;j<tag.length;j++) {
-          console.log(tag[j]);
-          if (tag[j] == 'photography' || tag[j] == 'photo') {
-            output += ('<h2>'+result[i].title+'</h2>');
-            output += '<div style="width: 400px; height: 400px; overflow: hidden"><img src='+image[0];
-            output += ' style="width:400px"></div><br />'
-            nu++;
-            break;
-          }
-        } if (nu == 5) { break; }
+        var output=`
+        <!DOCTYPE html>
+        <html lang="ko">
+          <head>
+            <meta charset="utf-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+
+            <title>SteemPhoto</title>
+
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+            <style>
+              .no-padding {
+                  padding-left: 0 !important;
+                  padding-right: 0 !important;
+              }
+            </style>
+          </head>
+          <body>
+                <div class="container">
+                  <div class="col-xs-3"><img src=${profile_image} style="width:100%; height:auto; display: block" class="img-circle"></div>
+                  <h2>${author}</h2>
+                  <p class="lead">${about}</p>
+
+                  <div class="row">
+        `;
+        var tag={}, image={};
+        var i,j,nu = 0;
+
+        for (i=0;i<result.length;i++) {
+          tag = JSON.parse(result[i].json_metadata).tags;
+          image = JSON.parse(result[i].json_metadata).image;
+
+          for (j=0;j<tag.length;j++) {
+            if (tag[j] == 'photography' || tag[j] == 'photo') {
+              output += '<div class="col-xs-4 no-padding">';
+              output += ('<img src='+image[0]);
+              output += ' class="img-responsive" style="width: 150px; height: 150px; padding: 1px"></div>'
+              nu++;
+              break;
+            }
+          } if (nu == 5) { break; }
 
 
-/*        if (image_data.height > image_data.width) {
-          output += 'width:100%; height:auto; margin-left=0><br />';
-        } else {
-          imageAspect = image_data.height/image_data.width;
-          marginLeft = -Math.round((400/imageAspect - 400)/2);
-          output += 'width:auto; height:100%; margin-left='+marginLeft+'px><br />';
-        }*/
 
-      }
-      res.send(output);
+  /*        if (image_data.height > image_data.width) {
+            output += 'width:100%; height:auto; margin-left=0><br />';
+          } else {
+            imageAspect = image_data.height/image_data.width;
+            marginLeft = -Math.round((400/imageAspect - 400)/2);
+            output += 'width:auto; height:100%; margin-left='+marginLeft+'px><br />';
+          }*/
 
+        }
+        output += '</div></div></body></html>';
+        res.send(output);
+      });
     }
   });
   /*
