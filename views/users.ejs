@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SteemPhoto</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- CDN -->
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
+    <link rel='stylesheet' href='/stylesheets/steemit.css'/>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+</head>
+<body>
+<header id="header-navbar">
+    <div class="content-mini content-mini-full content-boxed">
+        <!-- Header Navigation Left -->
+        <ul class="nav-header pull-left">
+            <li class="header-content">
+                <a>
+                    <img src="https://steemitimages.com/DQmUphk71kX25NrAUvwSpwvqtnT66ZdzupfB9Cw9Z1wM97r/steemitnew.png"
+                         height="30px;">
+                    <em class="small font-w400">PHOTO</em>
+                </a>
+            </li>
+        </ul>
+        <!-- END Header Navigation Left -->
+    </div>
+</header>
+<div class="page-container">
+    <!-- Main Container -->
+    <main id="main-container">
+        <!-- Page Header -->
+        <div class="block-content block-content-full clearfix bg-white">
+            <div class="row">
+                <div class="col-3">
+                    <img class="img-avatar" src="<%= profile_image %>" alt="">
+                </div>
+                <div class="col-9">
+                    <div class="row items-push text-center">
+                        <div class="col-4">
+                            <div class="h4 push-5-t"><%= post_count %></div>
+                            <div class="h5 font-w300 text-muted">Posts</div>
+                        </div>
+                        <div class="col-4">
+                            <div class="h4 push-5-t"><%= follower_count %></div>
+                            <div class="h5 font-w300 text-muted">Followers</div>
+                        </div>
+                        <div class="col-4">
+                            <div class="h4 push-5-t">450</div>
+                            <div class="h5 font-w300 text-muted">Following</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="push-10-t">
+                <div class="font-w600 push-5"><%= name %></div>
+                <div class="text-muted"><%= about %></div>
+            </div>
+        </div>
+        <!-- END Page Header -->
+
+        <!-- Page Content -->
+        <div class="content content-boxed remove-padding bg-white">
+            <div class="row">
+                <%= photos %>
+                <!-- TODO:  photos loop 돌려서 -->
+                <!-- TODO: css class 'photo-feed / photo-container'  -->
+            </div>
+        </div>
+        <!-- END Page Content -->
+    </main>
+    <!-- END Main Container -->
+</div>
+</body>
+</html>

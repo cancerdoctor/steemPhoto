@@ -1,0 +1,10 @@
+.photo-container {
+    overflow: hidden;
+}
+.photo-feed {
+    height: 120px;
+    position: relative;
+    object-fit: cover;
+    width: 100%;
+    display: block;
+}
