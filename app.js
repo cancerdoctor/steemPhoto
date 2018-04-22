@@ -4,6 +4,14 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
+var mysql = require('mysql');
+var conn = mysql.createConnection({ //기본세팅값
+  host : 'localhost',
+  user : 'root',
+  password : '111111',
+  database : 'o2'
+});
+conn.connect(); //mysql 접속하기
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -15,8 +23,14 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
+// There are 'default', 'short', 'tiny', 'dev' in log formats
+// Concise output colored by response status for development use.
+// The :status token will be colored red for server error codes, yellow for client error codes, cyan for redirection codes, and uncolored for all other codes.
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+// bodyParser.urlencoded??
+// The extended option allows to choose between parsing the URL-encoded data with the querystring library (when false) or the qs library (when true).
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(__dirname + '/node_modules/bootstrap/dist'));
@@ -41,6 +55,10 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
+});
+
+app.listen(3000, function(){
+  console.log("Connected, 3000 port!!");
 });
 
 module.exports = app;

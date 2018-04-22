@@ -1,10 +1,42 @@
-.photo-container {
-    overflow: hidden;
+.avatar-container {
+    width: 52px;
+    height: auto;
+    float: left;
+    padding: 10px;
+}
+.layout-header {
+  border-bottom: 1px solid rgb(211,211,211);
+}
+.layout-avatar {
+  display: inline-block !important;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%
+}
+.layout-id {
+  height: 52px;
+  display: table-cell;
+  vertical-align: middle;
 }
 .photo-feed {
-    height: 120px;
+    height: 130px;
     position: relative;
     object-fit: cover;
     width: 100%;
     display: block;
+}
+.small-padding {
+  padding:1px !important;
+}
+.feed-avatar {
+    display: inline-block !important;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%
+
+}
+.photo-layout {
+    position: relative;
+    width: 100%;
+    height: auto;
 }
