@@ -16,6 +16,7 @@ router.get('/', function (req, res, next) {
         console.log(typeof acc); // object 라고 나오므로 JSON.parse 할 필요가 없음 https://stackoverflow.com/questions/38380462/syntaxerror-unexpected-token-o-in-json-at-position-1
         var account = acc[0];
 
+// TODO: 안녕
         if (account==null) {
           res.render('error', {
             message: 'No accounts found',
